@@ -29,7 +29,6 @@ public class ReportApiController {
 
     private User currentUser() { return userService.getCurrentUser(); }
 
-    /** GET /api/reports — list generated reports for the current user */
     @GetMapping
     public ResponseEntity<List<ReportDto>> list() {
         return ResponseEntity.ok(
@@ -38,7 +37,6 @@ public class ReportApiController {
                         .collect(Collectors.toList()));
     }
 
-    /** POST /api/reports — generate/save a report */
     @PostMapping
     public ResponseEntity<ReportDto> create(@RequestBody Map<String, Object> body) {
         User user = currentUser();
@@ -85,22 +83,18 @@ public class ReportApiController {
         return ResponseEntity.ok(ReportDto.from(reportService.save(report)));
     }
 
-    /** GET /api/reports/{id} */
     @GetMapping("/{id}")
     public ResponseEntity<ReportDto> get(@PathVariable Long id) {
         return ResponseEntity.ok(ReportDto.from(reportService.findByIdAndUser(id, currentUser())));
     }
 
-    /** DELETE /api/reports/{id} */
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
         reportService.delete(id, currentUser());
         return ResponseEntity.ok(Map.of("message", "Report deleted successfully."));
     }
 
-    /**
-     * GET /api/reports/dashboard — summary metrics for the main Dashboard
-     */
+
     @GetMapping("/dashboard")
     @SuppressWarnings("unchecked")
     public ResponseEntity<Map<String, Object>> dashboard() {
@@ -129,9 +123,6 @@ public class ReportApiController {
         return ResponseEntity.ok(result);
     }
 
-    /**
-     * GET /api/reports/charts — data for charts (expenses by category, monthly trend, event status)
-     */
     @GetMapping("/charts")
     public ResponseEntity<Map<String, Object>> charts() {
         User user = currentUser();

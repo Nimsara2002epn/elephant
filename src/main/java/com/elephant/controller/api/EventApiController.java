@@ -147,9 +147,9 @@ public class EventApiController {
 
             
             String color = switch (event.getStatus()) {
-                case COMPLETED -> "#10b981"; // green
-                case CANCELLED -> "#94a3b8"; // slate
-                default        -> "#3b82f6"; // blue (SCHEDULED)
+                case COMPLETED -> "#10b981";
+                case CANCELLED -> "#94a3b8";
+                default        -> "#3b82f6";
             };
             item.setColor(color);
 
@@ -187,9 +187,9 @@ public class EventApiController {
 
             // Color by status
             String color = switch (bill.getStatus()) {
-                case PAID    -> "#10b981"; // green
-                case OVERDUE -> "#ef4444"; // red
-                default      -> "#f59e0b"; // amber (UNPAID)
+                case PAID    -> "#10b981";
+                case OVERDUE -> "#ef4444";
+                default      -> "#f59e0b";
             };
             item.setColor(color);
 
