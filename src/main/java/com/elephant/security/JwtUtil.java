@@ -11,10 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.util.Date;
 
-/**
- * Utility for generating and validating JWT tokens used by the /api/** REST layer.
- * The Thymeleaf session-based auth is NOT affected by this class.
- */
+
 @Component
 public class JwtUtil {
 
@@ -38,7 +35,6 @@ public class JwtUtil {
         this.signingKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 
-    /** Generate a signed JWT for the given user. */
     public String generateToken(User user) {
         Date now    = new Date();
         Date expiry = new Date(now.getTime() + expirationMs);
@@ -54,22 +50,18 @@ public class JwtUtil {
                 .compact();
     }
 
-    /** Extract the email (subject) from a token. */
     public String extractEmail(String token) {
         return parseClaims(token).getSubject();
     }
 
-    /** Extract userId claim. */
     public Long extractUserId(String token) {
         return parseClaims(token).get("userId", Long.class);
     }
 
-    /** Extract role claim. */
     public String extractRole(String token) {
         return parseClaims(token).get("role", String.class);
     }
 
-    /** Returns true if the token is syntactically valid and not expired. */
     public boolean isTokenValid(String token) {
         try {
             parseClaims(token);
@@ -79,7 +71,6 @@ public class JwtUtil {
         }
     }
 
-    // ── Private helpers ─────────────────────────────────────────────────────
 
     private Claims parseClaims(String token) {
         return Jwts.parser()

@@ -14,10 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-/**
- * JWT authentication filter — only fires for /api/** requests.
- * All other requests (Thymeleaf pages, static assets) pass through unaffected.
- */
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -26,8 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        // This filter is registered only on the API security chain, but as an
-        // extra safety guard, skip if the path does not start with /api/
+
         String path = request.getServletPath();
         return !path.startsWith("/api/");
     }
@@ -45,7 +41,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (jwtUtil.isTokenValid(token)) {
                 String email = jwtUtil.extractEmail(token);
 
-                // Only authenticate if not already authenticated
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
