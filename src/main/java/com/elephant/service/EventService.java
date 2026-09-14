@@ -42,7 +42,6 @@ public class EventService {
     }
 
     @Autowired private com.elephant.repository.GroupEventRepository groupEventRepository;
-    @Autowired private com.elephant.repository.EventFeedbackRepository feedbackRepository;
     @Autowired private com.elephant.repository.ReminderRepository reminderRepository;
 
     public void updateStatus(Long eventId, Event.EventStatus status, User user) {
@@ -53,9 +52,7 @@ public class EventService {
 
     public void delete(Long eventId, User user) {
         Event event = findByIdAndUser(eventId, user);
-        // Cascade delete child references to prevent foreign key constraint violations
         groupEventRepository.findByEvent(event).forEach(groupEventRepository::delete);
-        feedbackRepository.findByEvent(event).forEach(feedbackRepository::delete);
         reminderRepository.findAll().stream()
                 .filter(r -> r.getEvent() != null && r.getEvent().getId().equals(eventId))
                 .forEach(reminderRepository::delete);
