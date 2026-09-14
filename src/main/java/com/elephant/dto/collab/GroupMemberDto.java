@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class GroupMemberDto {
     private Long id;
+
     private Long userId;
     private String name;
     private String email;
