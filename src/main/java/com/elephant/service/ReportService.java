@@ -20,7 +20,6 @@ public class ReportService {
     @Autowired private BillRepository billRepository;
     @Autowired private EventRepository eventRepository;
     @Autowired private ReminderRepository reminderRepository;
-    @Autowired private EventFeedbackRepository feedbackRepository;
 
     public Report save(Report report) { return reportRepository.save(report); }
 
@@ -51,7 +50,7 @@ public class ReportService {
         Map<String, Object> data = new HashMap<>();
         LocalDate today = LocalDate.now();
 
-        // Financial summary
+        // Financialsummary
         List<Bill> allBills = billRepository.findByUserOrderByDueDateAsc(user);
         BigDecimal totalBillAmount = allBills.stream().map(Bill::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
         long paidCount   = billRepository.countByUserAndStatus(user, Bill.BillStatus.PAID);
