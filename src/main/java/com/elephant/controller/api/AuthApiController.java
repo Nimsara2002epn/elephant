@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-/**
- * REST authentication endpoints for the React frontend.
- * Uses JWT — completely separate from the Thymeleaf form-login at /auth/login.
- */
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthApiController {
@@ -28,7 +25,6 @@ public class AuthApiController {
     @Autowired private JwtUtil jwtUtil;
     @Autowired private UserService userService;
 
-    /** POST /api/auth/login — authenticate and return a JWT token */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         String email = request.getEmail() != null ? request.getEmail().trim() : "";
@@ -62,7 +58,6 @@ public class AuthApiController {
         }
     }
 
-    /** POST /api/auth/register — register a new user */
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody Map<String, String> body) {
         String name     = body.get("name");
@@ -74,13 +69,11 @@ public class AuthApiController {
         return ResponseEntity.ok(Map.of("message", "Registration successful. You can now log in."));
     }
 
-    /** GET /api/auth/me — return the current authenticated user's profile */
     @GetMapping("/me")
     public ResponseEntity<UserDto> me() {
         return ResponseEntity.ok(UserDto.from(userService.getCurrentUser()));
     }
 
-    /** PUT /api/auth/profile — update name and phone */
     @PutMapping("/profile")
     public ResponseEntity<UserDto> updateProfile(@RequestBody Map<String, String> body) {
         User user = userService.getCurrentUser();
@@ -88,7 +81,6 @@ public class AuthApiController {
         return ResponseEntity.ok(UserDto.from(updated));
     }
 
-    /** PUT /api/auth/preferences — update notification and theme preferences */
     @PutMapping("/preferences")
     public ResponseEntity<UserDto> updatePreferences(@RequestBody Map<String, Object> body) {
         User user = userService.getCurrentUser();
@@ -99,7 +91,6 @@ public class AuthApiController {
         return ResponseEntity.ok(UserDto.from(updated));
     }
 
-    /** POST /api/auth/change-password */
     @PostMapping("/change-password")
     public ResponseEntity<Map<String, String>> changePassword(@RequestBody Map<String, String> body) {
         User user = userService.getCurrentUser();

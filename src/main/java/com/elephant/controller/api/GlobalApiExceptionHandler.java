@@ -7,11 +7,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-/**
- * Global exception handler scoped to the /api/** REST controllers only.
- * Returns uniform JSON error responses.
- * Does NOT intercept exceptions from Thymeleaf controllers.
- */
+
 @RestControllerAdvice(basePackages = "com.elephant.controller.api")
 public class GlobalApiExceptionHandler {
 

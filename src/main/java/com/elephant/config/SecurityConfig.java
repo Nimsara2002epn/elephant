@@ -23,14 +23,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Production Security Configuration for Elephant.
- *
- * Architecture:
- *   - React + Vite Single Page Application on port 5173
- *   - Stateless Spring Boot REST API on port 8080
- *   - JWT Bearer Authentication & Role-Based Authorization
- */
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -55,13 +48,9 @@ public class SecurityConfig {
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // Public authentication and error endpoints
                 .requestMatchers("/api/auth/login", "/api/auth/register", "/error").permitAll()
-                // Strict Admin-only API endpoints
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                // All other /api/** endpoints require a valid JWT
                 .requestMatchers("/api/**").authenticated()
-                // Any other path
                 .anyRequest().permitAll()
             )
             .authenticationProvider(authenticationProvider())

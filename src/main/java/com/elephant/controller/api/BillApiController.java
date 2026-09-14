@@ -25,7 +25,6 @@ public class BillApiController {
 
     private User currentUser() { return userService.getCurrentUser(); }
 
-    /** GET /api/bills — list all bills for the current user */
     @GetMapping
     public ResponseEntity<List<BillDto>> list(
             @RequestParam(required = false) String status,
@@ -54,7 +53,6 @@ public class BillApiController {
         return ResponseEntity.ok(bills.stream().map(BillDto::from).collect(Collectors.toList()));
     }
 
-    /** POST /api/bills — create a new bill */
     @PostMapping
     public ResponseEntity<BillDto> create(@RequestBody Map<String, Object> body) {
         User user = currentUser();
@@ -62,13 +60,11 @@ public class BillApiController {
         return ResponseEntity.ok(BillDto.from(billService.save(bill)));
     }
 
-    /** GET /api/bills/{id} */
     @GetMapping("/{id}")
     public ResponseEntity<BillDto> get(@PathVariable Long id) {
         return ResponseEntity.ok(BillDto.from(billService.findByIdAndUser(id, currentUser())));
     }
 
-    /** PUT /api/bills/{id} — update an existing bill */
     @PutMapping("/{id}")
     public ResponseEntity<BillDto> update(@PathVariable Long id, @RequestBody Map<String, Object> body) {
         User user = currentUser();
@@ -77,14 +73,12 @@ public class BillApiController {
         return ResponseEntity.ok(BillDto.from(billService.save(bill)));
     }
 
-    /** DELETE /api/bills/{id} */
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
         billService.delete(id, currentUser());
         return ResponseEntity.ok(Map.of("message", "Bill deleted successfully."));
     }
 
-    /** POST /api/bills/{id}/pay — mark as paid */
     @PostMapping("/{id}/pay")
     public ResponseEntity<BillDto> pay(@PathVariable Long id) {
         User user = currentUser();
@@ -92,7 +86,6 @@ public class BillApiController {
         return ResponseEntity.ok(BillDto.from(billService.findByIdAndUser(id, user)));
     }
 
-    /** POST /api/bills/{id}/unpay — mark as unpaid */
     @PostMapping("/{id}/unpay")
     public ResponseEntity<BillDto> unpay(@PathVariable Long id) {
         User user = currentUser();
@@ -100,13 +93,11 @@ public class BillApiController {
         return ResponseEntity.ok(BillDto.from(billService.findByIdAndUser(id, user)));
     }
 
-    /** GET /api/bills/categories */
     @GetMapping("/categories")
     public ResponseEntity<List<String>> categories() {
         return ResponseEntity.ok(billService.findCategories(currentUser()));
     }
 
-    /** GET /api/bills/stats */
     @GetMapping("/stats")
     public ResponseEntity<BillStatsDto> stats() {
         User user = currentUser();
@@ -122,7 +113,6 @@ public class BillApiController {
                 totalAmount, paidAmount, unpaidAmount));
     }
 
-    // ── Helper ─────────────────────────────────────────────────────────────
 
     private Bill mapToBill(Map<String, Object> body, Bill bill, User user) {
         if (body.containsKey("title"))              bill.setTitle((String) body.get("title"));
